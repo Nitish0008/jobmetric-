@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import OtpInput from "react-otp-input";
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState("");
@@ -28,11 +29,26 @@ export default function OtpVerify() {
             <label className="label">
               <span className="label-text pb-2">Enter OTP sent to {user.email}</span>
             </label>
-            <input
-              type="text"
-              className="input input-bordered"
+            <OtpInput
               value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              onChange={setOtp}
+              numInputs={6}
+              renderSeparator={<span className="px-1">-</span>}
+              renderInput={(props) => (
+                <input
+                  {...props}
+                  className="input input-bordered text-center w-12 h-12 mx-1"
+                />
+              )}
+              inputStyle={{
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                width: '40px',
+                height: '40px',
+                fontSize: '18px',
+                textAlign: 'center',
+              }}
+              shouldAutoFocus
             />
           </div>
 

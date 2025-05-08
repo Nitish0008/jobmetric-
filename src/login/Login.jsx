@@ -20,7 +20,7 @@ export default function Login() {
           <h2 className="text-center text-2xl font-bold">Login</h2>
 
           {/* Role selection */}
-          <div className="form-control mb-4 border-1 rounded-2xl border-amber-100 shadow-2xl shadow-amber-50">
+          {/* <div className="form-control mb-4 border-1 rounded-2xl border-amber-100 shadow-2xl shadow-amber-50">
             <label className="label-text font-medium p-2 pt-2">Login as:</label>
             <label className="label cursor-pointer">
               <input
@@ -44,7 +44,7 @@ export default function Login() {
               />
               <span className="label-text">User</span>
             </label>
-          </div>
+          </div> */}
 
           <div className="form-control ">
             <label className="label">
