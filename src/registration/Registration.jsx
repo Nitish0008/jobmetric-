@@ -6,6 +6,7 @@ export default function Register() {
     FirstName: "",
     LastName: "",
     Email: "",
+    Contact: "",
     Password: "",
     Role: "",
   });
@@ -28,7 +29,7 @@ export default function Register() {
         <div className="card-body">
           <h2 className="text-center text-2xl font-bold">Register</h2>
 
-          {["FirstName", "LastName", "Email", "Password"].map((field) => (
+          {["FirstName", "LastName", "Email", "Contact", "Password"].map((field) => (
             <div key={field} className="form-control">
               <label className="label">
                 <span className="label-text pb-2 text-white">{field.replace(/([A-Z])/g, " $1")}</span>
