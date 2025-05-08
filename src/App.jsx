@@ -1,12 +1,12 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './login/Login';
-import Register from './registration/Registration';
-import HRDashboard from './hrdashboard/HRDashboard';
-import UserDashboard from './userdashboard/UserDashboard';
+import Login from './components/login/Login';
+import Register from './components/registration/Registration';
+import HRDashboard from './components/hrdashboard/HRDashboard';
+import UserDashboard from './components/userdashboard/UserDashboard';
 import "./style.css"; 
-import OtpVerify from './registration/OtpVerify';
+import OtpVerify from './components/registration/OtpVerify';
 
 function App() {
   return (
