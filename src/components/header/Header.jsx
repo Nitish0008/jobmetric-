@@ -3,7 +3,7 @@ import { FaBell, FaEnvelope } from "react-icons/fa";
 
 export default function Header() {
   return (
-    <div className="navbar bg-blue-500 shadow-sm px-4">
+    <div className="navbar bg-blue-500 shadow-sm px-4 sticky top-0 z-50">
       <div className="flex-1">
         <a className="btn btn-ghost text-xl text-white bg-black font-bold">JobMetric</a>
       </div>
