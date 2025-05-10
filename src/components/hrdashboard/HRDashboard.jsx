@@ -1,9 +1,13 @@
-import React from "react";
+import HeaderHr from "../header/Headerhr";
+import SearchBar from "../searchbar/SearchBar";
+import JobPortal from "../joblisting/JobPortal";
 
 export default function HRDashboard() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <h1 className="text-3xl font-bold text-primary">Welcome, HR!</h1>
+    <div className="bg-gray-100 min-h-screen flex flex-col">
+      <HeaderHr />
+      <SearchBar />
+      <JobPortal />
     </div>
   );
 }
