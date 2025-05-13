@@ -5,7 +5,9 @@ export default function Header() {
   return (
     <div className="navbar bg-blue-500 shadow-sm px-4 sticky top-0 z-50">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl text-white bg-black font-bold shadow">JobMetric</a>
+        <a className="btn btn-ghost text-xl text-white bg-black font-bold shadow">
+          JobMetric
+        </a>
       </div>
 
       <div className="flex items-center gap-4">

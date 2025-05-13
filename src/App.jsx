@@ -8,6 +8,8 @@ import UserDashboard from './components/userdashboard/UserDashboard';
 import "./style.css"; 
 import OtpVerify from './components/registration/OtpVerify';
 
+import JobPostDashboard from "./components/jobpost/dashboard/JobPostDashboard";
+
 function App() {
   return (
     <Router>
@@ -17,6 +19,7 @@ function App() {
         <Route path="/verify-otp" element={<OtpVerify/>} />
         <Route path="/hr-dashboard" element={<HRDashboard />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
+        <Route path="/job-post" element={<JobPostDashboard />} />
       </Routes>
     </Router>
   );

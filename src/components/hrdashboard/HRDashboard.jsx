@@ -8,6 +8,7 @@ export default function HRDashboard() {
       <HeaderHr />
       <SearchBar />
       <JobPortal />
+      
     </div>
   );
 }

@@ -10,7 +10,7 @@ export default function UserDashboard() {
       <Header />
       <SearchBar />
       <JobPortal />  
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
