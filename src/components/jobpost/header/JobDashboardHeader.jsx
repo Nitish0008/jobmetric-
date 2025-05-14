@@ -1,6 +1,6 @@
 export default function JobDashboardHeader({ toggleSidebar }) {
   return (
-    <div className="w-full bg-white p-4 shadow flex items-center justify-between">
+    <div className="w-full bg-black p-4 shadow flex items-center justify-between sticky top-0 z-10">
       {/* Sidebar Toggle on Mobile */}
       <div className="flex items-center gap-2">
         <button
@@ -9,7 +9,7 @@ export default function JobDashboardHeader({ toggleSidebar }) {
         >
           ☰
         </button>
-        <h1 className="text-xl font-semibold text-black">Open and paused jobs (6)</h1>
+        <h1 className="text-xl font-semibold text-white">Open and paused jobs (6)</h1>
       </div>
 
       {/* Profile Dropdown */}

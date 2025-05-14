@@ -9,6 +9,7 @@ import "./style.css";
 import OtpVerify from './components/registration/OtpVerify';
 
 import JobPostDashboard from "./components/jobpost/dashboard/JobPostDashboard";
+import JobPostForm from './components/jobpost/jobposttable/JobPostForm';
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
         <Route path="/hr-dashboard" element={<HRDashboard />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/job-post" element={<JobPostDashboard />} />
+
+        <Route path="/job-post-form" element={<JobPostForm />} />
+
       </Routes>
     </Router>
   );
