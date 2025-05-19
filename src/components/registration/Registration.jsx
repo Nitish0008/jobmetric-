@@ -1,71 +1,118 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    FirstName: "",
-    LastName: "",
-    Email: "",
-    Contact: "",
-    Password: "",
-    Role: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    role: "",
+    contact: "",
   });
 
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleRegister = () => {
+    console.log("Form Data:", formData);
+
     // Normally send form data to backend and trigger OTP email
-    // Simulate sending OTP and redirect
-    navigate("/verify-otp", { state: formData });
+    axios
+      .post("http://localhost:8080/api/auth/register", formData)
+      .then((response) => {
+        console.log("Registration successful:", response.data);
+        // Redirect to OTP verification page
+        navigate("/verify-otp", {
+          state: { email: formData.email, role: formData.role },
+        });
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          role: "",
+          contact: "",
+        });
+      })
+      .catch((error) => {
+        console.log("Registration error:", error);
+        alert(`Registration failed. ${error} Please try again`);
+        // Handle error (e.g., show a message to the user)
+      });
   };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="card w-full max-w-sm shadow-2xl border bg-base-100">
-        <div className="card-body">
-          <h2 className="text-center text-2xl font-bold">Register</h2>
+      <div className="card w-96 bg-base-100 shadow-sm">
+        <h1 className="text-center pt-6 text-2xl">Register Here</h1>
+        <div className="card-body flex flex-col items-center gap-6">
+          <input
+            type="text"
+            value={formData.firstName}
+            onChange={(e) =>
+              setFormData({ ...formData, firstName: e.target.value })
+            }
+            name="firstName"
+            placeholder="Name"
+            className="input"
+          />
+          <input
+            type="text"
+            value={formData.lastName}
+            onChange={(e) =>
+              setFormData({ ...formData, lastName: e.target.value })
+            }
+            name="lastName"
+            placeholder="Last Name"
+            className="input"
+          />
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            name="email"
+            placeholder="Email"
+            className="input"
+          />
+          <input
+            type="number"
+            value={formData.contact}
+            onChange={(e) =>
+              setFormData({ ...formData, contact: e.target.value })
+            }
+            name="contact"
+            placeholder="Contact"
+            className="input"
+          />
+          <input
+            type="password"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+            name="password"
+            placeholder="Password"
+            className="input"
+          />
+          <select
+            value={formData.role}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            className="select"
+            required
+          >
+            <option value="" disabled>
+              Pick Role
+            </option>
+            <option value="HR">HR</option>
+            <option value="USER">USER</option>
+          </select>
 
-          {["FirstName", "LastName", "Email", "Contact", "Password"].map((field) => (
-            <div key={field} className="form-control">
-              <label className="label">
-                <span className="label-text pb-2 text-white">{field.replace(/([A-Z])/g, " $1")}</span>
-              </label>
-              <input
-                type={field === "password" ? "password" : "text"}
-                placeholder={`Enter ${field}`}
-                name={field}
-                className="input input-bordered"
-                onChange={handleChange}
-              />
-            </div>
-          ))}
-
-          <div className="form-control mt-4">
-            <label className="label">
-              <span className="label-text pb-2 text-white">Select Role</span>
-            </label>
-            <select
-              className="select select-bordered"
-              name="role"
-              onChange={handleChange}
-            >
-              <option disabled selected value="">
-                Select your role
-              </option>
-              <option value="hr">HR</option>
-              <option value="user">User</option>
-            </select>
-          </div>
-
-          <div className="form-control mt-6">
-            <button onClick={handleRegister} className="btn btn-primary">
-              Send OTP
-            </button>
-          </div>
+          <button onClick={handleRegister} className="btn btn-primary">
+            Register
+          </button>
         </div>
       </div>
     </div>

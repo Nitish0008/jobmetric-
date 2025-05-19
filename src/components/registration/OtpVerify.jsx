@@ -1,6 +1,6 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import OtpInput from "react-otp-input";
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState("");
@@ -8,17 +8,24 @@ export default function OtpVerify() {
   const navigate = useNavigate();
 
   const user = location.state;
+  console.log("User data from registration:", user);
 
   const handleVerify = () => {
-    // Normally verify OTP via backend
-    if (otp === "123456") {
-      if (user.role === "hr") navigate("/hr-dashboard");
-      else navigate("/user-dashboard");
-    } else {
-      alert("Invalid OTP");
-    }
-  };
+    const data = {
+      email: user.email,
+      otp: otp,
+    };
 
+    axios
+      .post("http://localhost:8080/api/auth/verify-otp", data)
+      .then((response) => {
+        alert("OTP verification successful:");
+        navigate("/", {
+          state: { email: user.email, role: user.role },
+        }); 
+      })
+      .catch((error) => console.log(error.response.data));
+  };
   return (
     <div className="min-h-screen bg-amber-50 flex items-center justify-center">
       <div className="card w-full max-w-sm shadow-2xl border bg-base-100">
@@ -27,28 +34,15 @@ export default function OtpVerify() {
 
           <div className="form-control mt-4">
             <label className="label">
-              <span className="label-text pb-2">Enter OTP sent to {user.email}</span>
+              <span className="label-text pb-2">
+                Enter OTP sent to {user.email}
+              </span>
             </label>
-            <OtpInput
+            <input
+              type="text"
+              className="input input-bordered"
               value={otp}
-              onChange={setOtp}
-              numInputs={6}
-              renderSeparator={<span className="px-1">-</span>}
-              renderInput={(props) => (
-                <input
-                  {...props}
-                  className="input input-bordered text-center w-12 h-12 mx-1"
-                />
-              )}
-              inputStyle={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                width: '40px',
-                height: '40px',
-                fontSize: '18px',
-                textAlign: 'center',
-              }}
-              shouldAutoFocus
+              onChange={(e) => setOtp(e.target.value)}
             />
           </div>
 

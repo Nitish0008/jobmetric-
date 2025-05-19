@@ -1,16 +1,54 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [role, setRole] = useState("user");
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (role === "hr") {
-      navigate("/hr-dashboard");
-    } else {
-      navigate("/user-dashboard");
-    }
+    const data = {
+      email: loginData.email,
+      password: loginData.password,
+    };
+
+    console.log("Login Data:", data);
+
+    axios
+      .post("http://localhost:8080/api/auth/login", data)
+      .then((response) => {
+        console.log("Login successful:", response.data.data.access_token);
+
+        //decode the token to get user role
+        const decodedToken = JSON.parse(
+          atob(response.data.data.access_token.split(".")[1])
+        );
+        console.log("Decoded Token:", decodedToken);
+        // Store the token and decodedToken in local storage or state management
+        localStorage.setItem("access_token", response.data.data.access_token);
+        sessionStorage.setItem("access_token", response.data.data.access_token);
+        sessionStorage.setItem("user_role", decodedToken.role[0].authority);
+        localStorage.setItem("user_role", decodedToken.role[0].authority);
+
+        // Redirect based on role
+        if (decodedToken.role[0].authority === "ROLE_HR") {
+          navigate("/hr-dashboard");
+        } else if (decodedToken.role[0].authority === "ROLE_USER") {
+          navigate("/user-dashboard");
+        } else {
+          alert("Invalid role");
+        }
+
+        alert("Login successful");
+      })
+      .catch((error) => {
+        console.log("Login error:", error);
+        alert("Login failed. Please check your credentials.");
+      });
   };
 
   return (
@@ -52,6 +90,10 @@ export default function Login() {
             </label>
             <input
               type="email"
+              value={loginData.email}
+              onChange={(e) =>
+                setLoginData({ ...loginData, email: e.target.value })
+              }
               placeholder="email@example.com"
               className="input input-bordered"
             />
@@ -64,10 +106,17 @@ export default function Login() {
             <input
               type="password"
               placeholder="••••••••"
+              value={loginData.password}
+              onChange={(e) =>
+                setLoginData({ ...loginData, password: e.target.value })
+              }
               className="input input-bordered"
             />
             <label className="label">
-              <a href="#" className="label-text-alt link link-hover pt-2 text-warning">
+              <a
+                href="#"
+                className="label-text-alt link link-hover pt-2 text-warning"
+              >
                 Forgot password?
               </a>
             </label>
