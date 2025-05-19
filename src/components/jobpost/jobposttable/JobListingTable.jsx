@@ -3,7 +3,43 @@
 import React, { useState } from "react"
 import { ArrowUpDown, Edit, Trash2, CheckCircle, Clock, XCircle, Users } from "lucide-react"
 
+import axios from "axios"
+import { useEffect } from "react"
+
 export default function JobListingTable() {
+
+ const [jobs, setJobs] = useState([])
+
+
+const handleGetJobs = async () => {
+  const access_token = localStorage.getItem('access_token');
+
+  if (!access_token) {
+    console.error('No auth token found.');
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      'http://localhost:8080/api/jobs',
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        }
+      }
+    );
+
+    console.log('Jobs fetched successfully:', response.data);
+    setJobs(response?.data?.data);
+  } catch (error) {
+    console.error('Error fetching jobs:', error.response?.data || error.message);
+  }
+};
+useEffect(() => {
+    handleGetJobs();
+  }, []);
+
+
   // Sample data for the table
   const initialJobs = [
     {
@@ -43,7 +79,7 @@ export default function JobListingTable() {
     },
   ]
 
-  const [jobs, setJobs] = useState(initialJobs)
+
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: null,
@@ -173,7 +209,7 @@ export default function JobListingTable() {
                     <td className="px-6 py-4 text-black">
                       <div className="flex items-center">
                         <Users className="h-4 w-4 text-blue-600 mr-1" />
-                        {job.candidates}
+                        {job.companyName} 
                       </div>
                     </td>
                     <td className="px-6 py-4">{renderStatus(job.status)}</td>
