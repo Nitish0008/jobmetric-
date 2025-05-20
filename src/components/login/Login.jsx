@@ -42,7 +42,6 @@ export default function Login() {
         } else {
           alert("Invalid role");
         }
-
         alert("Login successful");
       })
       .catch((error) => {

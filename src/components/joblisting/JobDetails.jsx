@@ -1,27 +1,48 @@
-import React from "react";
 import { Briefcase, MapPin, IndianRupee, Users, List } from "lucide-react";
+
+// Helper function to format date
+function formatDate(dateString) {
+  if (!dateString) return "No deadline";
+  const date = new Date(dateString);
+  if (isNaN(date)) return "Invalid date";
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+}
 
 export const JobDetails = ({ job }) => {
   if (!job) {
-    return <div className="md:w-1/2 flex items-center justify-center text-gray-400 text-lg">👈 Select a job to view details</div>;
+    return (
+      <div className="md:w-1/2 flex items-center justify-center text-gray-400 text-lg">
+        👈 Select a job to view details
+      </div>
+    );
   }
 
   return (
     <div className="md:w-1/2 bg-gradient-to-br from-blue-100 via-white to-blue-50 p-8 overflow-y-auto">
       <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-blue-700 mb-2">{job.title}</h2>
+        <h2 className="text-2xl font-bold text-blue-700 mb-2">{job.title || "No Title"}</h2>
         <p className="text-gray-600 mb-2 flex items-center">
-          <Briefcase className="inline w-4 h-4 mr-1" /> {job.company}
+          <Briefcase className="inline w-4 h-4 mr-1" /> {job.companyName}
         </p>
         <p className="text-gray-600 mb-4 flex items-center">
-          <MapPin className="inline w-4 h-4 mr-1" /> {job.location}
+          <MapPin className="inline w-4 h-4 mr-1" /> {job.location || "Unknown Location"}
         </p>
         <p className="text-green-700 font-medium mb-4 flex items-center">
-          <IndianRupee className="inline w-4 h-4 mr-1" /> {job.salary}
+          <IndianRupee className="inline w-4 h-4 mr-1" /> {job.salary || "Not Disclosed"}
+        </p>
+          <p className="text-green-700 font-medium mb-4 flex items-center">
+         {job.workMode}
         </p>
         <div className="text-sm text-gray-700 space-y-2 mb-4">
-          <p><Users className="inline w-4 h-4 mr-1" /> {job.companySize} employees • {job.industry}</p>
-          <p><List className="inline w-4 h-4 mr-1" /> Skills: {job.skills.join(", ")}</p>
+          <p>
+            <Users className="inline w-4 h-4 mr-1" /> {job.experience || "N/A"} experience • {job.education || "N/A"}
+          </p>
+          <p>
+            <Users className="inline w-4 h-4 mr-1" /> {job.numberOfPost || "N/A"} post •  {formatDate(job.deadLine)}
+          </p>
+          <p>
+            <List className="inline w-4 h-4 mr-1" /> Skills: {job.category}
+          </p>
         </div>
         <div className="flex gap-3 mb-6">
           <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">
@@ -33,7 +54,9 @@ export const JobDetails = ({ job }) => {
         </div>
         <div>
           <h3 className="text-lg font-semibold mb-2 text-black underline">Job Description</h3>
-          <p className="text-gray-700 leading-relaxed whitespace-pre-line">{job.description}</p>
+          <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+            {job.description || "No description provided."}
+          </p>
         </div>
       </div>
     </div>

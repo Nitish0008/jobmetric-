@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import axios from "axios";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ReactDatePicker from "react-datepicker";
 
 import {
-  CalendarIcon,
   BriefcaseIcon,
   BuildingIcon,
   MapPinIcon,
@@ -15,6 +14,7 @@ import {
   UsersIcon,
   TagIcon,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function JobPostForm() {
   const [formData, setFormData] = useState({
@@ -29,21 +29,10 @@ export default function JobPostForm() {
     jobType: "Full-time",
     deadline: null,
     workMode: "Onsite",
-    categoryIds: [],
+    category: "", // Use a string for comma-separated category
   });
 
   const [activeTab, setActiveTab] = useState("basic");
-
-  const categories = [
-    { id: "1", name: "Software Development" },
-    { id: "2", name: "Marketing" },
-    { id: "3", name: "Design" },
-    { id: "4", name: "Sales" },
-    { id: "5", name: "Customer Service" },
-    { id: "6", name: "Finance" },
-    { id: "7", name: "Human Resources" },
-    { id: "8", name: "Data Science" },
-  ];
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -53,23 +42,24 @@ export default function JobPostForm() {
     }));
   };
 
-  const handleCategoryToggle = (categoryId) => {
-    setFormData((prev) => {
-      const isSelected = prev.categoryIds.includes(categoryId);
-      const updatedCategories = isSelected
-        ? prev.categoryIds.filter((id) => id !== categoryId)
-        : [...prev.categoryIds, categoryId];
-
-      return {
-        ...prev,
-        categoryIds: updatedCategories,
-      };
-    });
-  };
+  // api
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const access_token = localStorage.getItem("access_token");
+
+    // Validate all required fields
+    if (
+      !formData.title.trim() ||
+      !formData.companyName.trim() ||
+      !formData.description.trim() ||
+      !formData.location.trim() ||
+      !formData.category.trim()
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
 
     if (!access_token) {
       console.error("No auth token found.");
@@ -82,6 +72,10 @@ export default function JobPostForm() {
         {
           ...formData,
           deadline: formData.deadline?.toISOString() || null,
+          categoryIds: formData.category
+            .split(",")
+            .map((cat) => cat.trim())
+            .filter((cat) => cat.length > 0),
         },
         {
           headers: {
@@ -92,21 +86,22 @@ export default function JobPostForm() {
       );
 
       console.log("Success:", response.data);
+      navigate("/job-post"); // Navigate after successful post
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
     }
   };
 
-  const isLastTab = activeTab === "categories";
+  const isLastTab = activeTab === "category";
   const isFirstTab = activeTab === "basic";
 
   const moveToNextTab = () => {
     if (activeTab === "basic") setActiveTab("details");
-    else if (activeTab === "details") setActiveTab("categories");
+    else if (activeTab === "details") setActiveTab("category");
   };
 
   const moveToPreviousTab = () => {
-    if (activeTab === "categories") setActiveTab("details");
+    if (activeTab === "category") setActiveTab("details");
     else if (activeTab === "details") setActiveTab("basic");
   };
 
@@ -123,7 +118,7 @@ export default function JobPostForm() {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Tabs */}
           <div className="grid grid-cols-3 border rounded-md overflow-hidden">
-            {["basic", "details", "categories"].map((tab) => (
+            {["basic", "details", "category"].map((tab) => (
               <button
                 key={tab}
                 type="button"
@@ -136,7 +131,7 @@ export default function JobPostForm() {
               >
                 {tab === "basic" && "Basic Info"}
                 {tab === "details" && "Job Details"}
-                {tab === "categories" && "Categories"}
+                {tab === "category" && "category"}
               </button>
             ))}
           </div>
@@ -276,6 +271,23 @@ export default function JobPostForm() {
                 </div>
                 <div>
                   <label className="flex items-center gap-2 font-medium">
+                    <ClockIcon className="h-4 w-4 text-blue-600" />
+                    Deadline
+                  </label>
+                  <ReactDatePicker
+                    selected={formData.deadline}
+                    onChange={(date) =>
+                      setFormData((prev) => ({ ...prev, deadline: date }))
+                    }
+                    className="w-full border px-3 py-2 rounded-md"
+                    placeholderText="Select deadline"
+                    dateFormat="yyyy-MM-dd"
+                    minDate={new Date()}
+                    isClearable
+                  />
+                </div>
+                <div>
+                  <label className="flex items-center gap-2 font-medium">
                     <BriefcaseIcon className="h-4 w-4 text-blue-600" />
                     Job Type
                   </label>
@@ -292,41 +304,27 @@ export default function JobPostForm() {
                   </select>
                 </div>
               </div>
-              <div>
-                <label className="flex items-center gap-2 font-medium mt-4">
-                  <CalendarIcon className="h-4 w-4 text-blue-600" />
-                  Application Deadline
-                </label>
-                <DatePicker
-                  selected={formData.deadline}
-                  onChange={(date) =>
-                    setFormData((prev) => ({ ...prev, deadline: date }))
-                  }
-                  className="border px-3 py-2 rounded-md w-full"
-                  dateFormat="yyyy-MM-dd"
-                  placeholderText="Select deadline"
-                />
-              </div>
             </>
           )}
 
-          {/* Categories Tab */}
-          {activeTab === "categories" && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {categories.map((cat) => (
-                <label key={cat.id} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={formData.categoryIds.includes(cat.id)}
-                    onChange={() => handleCategoryToggle(cat.id)}
-                  />
-                  {cat.name}
-                </label>
-              ))}
+          {/* category Tab */}
+          {activeTab === "category" && (
+            <div>
+              <label className="flex items-center gap-2 font-medium">
+                <TagIcon className="h-4 w-4 text-blue-600" />
+                category (comma separated) *
+              </label>
+              <input
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+                className="w-full border px-3 py-2 rounded-md"
+                placeholder="e.g. Software Development, Marketing"
+              />
             </div>
           )}
-
-          {/* Navigation Buttons */}
           <div className="flex justify-between pt-6">
             {!isFirstTab && (
               <button

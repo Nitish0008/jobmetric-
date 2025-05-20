@@ -3,6 +3,13 @@ import { Link } from "react-router-dom"; // ✅ Import this
 import { FaBell, FaEnvelope } from "react-icons/fa";
 
 export default function HeaderHr() {
+  // Logout handler
+  const handleLogout = () => {
+    // Example: Remove token from localStorage and redirect to login
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
   return (
     <div className="navbar bg-blue-500 shadow-sm px-4 sticky top-0 z-50">
       <div className="flex-1">
@@ -63,7 +70,7 @@ export default function HeaderHr() {
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                <button onClick={handleLogout}>Logout</button>
               </li>
             </ul>
           </div>
