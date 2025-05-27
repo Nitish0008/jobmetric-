@@ -12,6 +12,7 @@ import JobPostDashboard from "./components/jobpost/dashboard/JobPostDashboard";
 import JobPostForm from './components/jobpost/jobposttable/JobPostForm';
 import JobListingTable from './components/jobpost/jobposttable/JobListingTable';
 
+
 function App() {
   return (
     <Router>
@@ -25,7 +26,8 @@ function App() {
 
         <Route path="/job-post-form" element={<JobPostForm />} />
     
-        <Route path="/job-post" element={JobListingTable}/>
+        <Route path="/job-post" element={<JobListingTable/>}/>
+       
       </Routes>
     </Router>
   );

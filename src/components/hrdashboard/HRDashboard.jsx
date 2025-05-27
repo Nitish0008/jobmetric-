@@ -1,6 +1,7 @@
 import HeaderHr from "../header/Headerhr";
 import SearchBar from "../searchbar/SearchBar";
 import JobPortal from "../joblisting/JobPortal";
+import Footer from "../footer/Footer";
 
 export default function HRDashboard() {
   return (
@@ -8,7 +9,7 @@ export default function HRDashboard() {
       <HeaderHr />
       <SearchBar />
       <JobPortal />
-      
+      <Footer />
     </div>
   );
 }

@@ -8,22 +8,19 @@ export default function Sidebar() {
     <div className="w-64 h-screen sticky top-0 bg-blue-600 shadow-md p-4 flex flex-col justify-between">
       <div>
         <div className="pb-7">
-          <a className="btn btn-ghost text-xl text-white bg-black font-bold shadow">
+          <Link to="/hr-dashboard" className="btn btn-ghost text-xl text-white bg-black font-bold shadow">
             JobMetric
-          </a>
+          </Link>
         </div>
         <nav className="space-y-4">
-          <button className="flex items-center gap-2 text-white hover:text-black">
+          <button className="flex items-center gap-2 textin-white hover:text-black">
             <FaSuitcase /> Manage Job Post
           </button>
           {/* <button className="flex items-center gap-2 text-white hover:text-black">
             <FaPlus /> Post a Job
           </button> */}
 
-          <Link
-            to="/job-post-form"
-            className="flex items-center gap-2 text-white hover:text-black"
-          >
+          <Link to="/job-post-form" className="flex items-center gap-2 text-white hover:text-black">
             <FaPlus /> Post a Job
           </Link>
         </nav>

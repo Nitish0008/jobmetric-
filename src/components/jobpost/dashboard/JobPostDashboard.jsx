@@ -26,6 +26,7 @@ export default function JobPostDashboard() {
         {/* <JobPostForm /> */}
 
       <JobListingTable />
+      
       </div>
     </div>
   );

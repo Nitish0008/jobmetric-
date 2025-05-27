@@ -40,9 +40,29 @@ export default function Login() {
         } else if (decodedToken.role[0].authority === "ROLE_USER") {
           navigate("/user-dashboard");
         } else {
+          // You can use a custom notification component here
+          // For now, fallback to alert for invalid role
           alert("Invalid role");
         }
-        alert("Login successful");
+        // Example: Replace alert with a styled notification
+        // You can use a library like react-toastify for better notifications
+        // toast.success("Login successful!");
+        // For now, use a simple custom notification
+        const notification = document.createElement("div");
+        notification.innerText = "Login successful!";
+        notification.style.position = "fixed";
+        notification.style.top = "20px";
+        notification.style.right = "20px";
+        notification.style.background = "#22c55e";
+        notification.style.color = "white";
+        notification.style.padding = "16px 24px";
+        notification.style.borderRadius = "8px";
+        notification.style.boxShadow = "0 2px 8px rgba(0,0,0,0.15)";
+        notification.style.zIndex = 9999;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 2000);
       })
       .catch((error) => {
         console.log("Login error:", error);
