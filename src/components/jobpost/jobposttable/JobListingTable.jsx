@@ -25,23 +25,24 @@ export default function JobListingTable() {
   const handleGetJobs = async () => {
     if (!access_token) return;
     try {
-      const response = await axios.get("http://localhost:8080/api/jobs", {
+      const response = await axios.get("http://localhost:8080/api/jobs/my-jobs", {
         headers: { Authorization: `Bearer ${access_token}` },
       });
       const jobs = response?.data?.data || [];
       setJobs(jobs);
 
-      const counts = {};
-      await Promise.all(
-        jobs.map(async (job) => {
-          const res = await axios.get(
-            `http://localhost:8080/api/applications/${job.id}`,
-            { headers: { Authorization: `Bearer ${access_token}` } }
-          );
-          counts[job.id] = res.data?.length || 0;
-        })
-      );
-      setApplicationCounts(counts);
+      // const counts = {};
+      // await Promise.all(
+      //   jobs.map(async (job) => {
+      //     const res = await axios.get(
+      //       `http://localhost:8080/api/applications/${job.id}`,
+      //       { headers: { Authorization: `Bearer ${access_token}` } }
+      //     );
+      //     counts[job.id] = res.data?.length || 0;
+      //   })
+      // );
+      // setApplicationCounts(counts);
+      console.log(jobs);
     } catch (error) {
       console.error(
         "Error fetching jobs:",

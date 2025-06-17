@@ -3,6 +3,11 @@ import { Link } from "react-router-dom"; // ✅ Import this
 import { FaBell, FaEnvelope } from "react-icons/fa";
 
 export default function HeaderHr() {
+
+
+
+
+  
   // Logout handler
   const handleLogout = () => {
     // Example: Remove token from localStorage and redirect to login
@@ -33,9 +38,9 @@ export default function HeaderHr() {
         {/* Icons... */}
         <div className="flex items-center gap-4">
           {/* Message Icon */}
-          <button className="btn btn-ghost btn-circle bg-black hover:bg-blue-900 transition duration-300 ease-in-out rounded-full p-2">
+          {/* <button className="btn btn-ghost btn-circle bg-black hover:bg-blue-900 transition duration-300 ease-in-out rounded-full p-2">
             <FaEnvelope className="text-xl text-white" />
-          </button>
+          </button> */}
 
           {/* Notification Icon */}
           <button className="btn btn-ghost btn-circle bg-black hover:bg-blue-900 transition duration-300 ease-in-out rounded-full p-2">

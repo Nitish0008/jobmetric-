@@ -1,7 +1,6 @@
 // src/components/sidebar/Sidebar.jsx
 import { FaSuitcase, FaPlus, FaSignOutAlt } from "react-icons/fa";
-
-import { Link } from "react-router-dom"; // ✅ Import this
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -13,14 +12,13 @@ export default function Sidebar() {
           </Link>
         </div>
         <nav className="space-y-4">
-          <button className="flex items-center gap-2 textin-white hover:text-black">
+          {/* ✅ Updated this to go to JobListingTable inside JobPostDashboard */}
+          <Link to="/job-post/list" className="flex items-center gap-2 text-white hover:text-black">
             <FaSuitcase /> Manage Job Post
-          </button>
-          {/* <button className="flex items-center gap-2 text-white hover:text-black">
-            <FaPlus /> Post a Job
-          </button> */}
+          </Link>
 
-          <Link to="/job-post-form" className="flex items-center gap-2 text-white hover:text-black">
+          {/* ✅ This now loads the nested JobPostForm inside JobPostDashboard */}
+          <Link to="/job-post/form" className="flex items-center gap-2 text-white hover:text-black">
             <FaPlus /> Post a Job
           </Link>
         </nav>

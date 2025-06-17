@@ -106,7 +106,7 @@ export default function JobPostForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4 text-black">
+    <div className="max-w-10xl mx-auto py-8 px-4 text-black">
       <div className="bg-white rounded-lg shadow-lg border border-gray-200">
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-t-lg">
           <h2 className="text-2xl font-bold flex items-center gap-2">

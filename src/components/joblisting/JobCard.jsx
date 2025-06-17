@@ -13,8 +13,14 @@ export const JobCard = ({ job, isSelected, onSelect }) => (
     <h3 className="text-xl font-semibold text-gray-800 mb-1">{job.title}</h3>
     <p className="text-gray-600 mb-2">{job.companyName}</p>
     <p className="text-gray-600 mb-2">{job.location}</p>
-    <span className="inline-block px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700 font-medium">
+   
+    <p className="text-gray-600 mb-2">{job.category}</p>
+    <span className="inline-block px-3 m-2 py-1 text-sm rounded-full bg-blue-100 text-blue-700 font-medium">
       {job.jobType}
+    </span>
+ 
+    <span className="inline-block px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700 font-medium">
+      Post {job.createdAt}
     </span>
   </div>
 );

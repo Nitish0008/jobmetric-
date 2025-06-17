@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [role, setRole] = useState("user");
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -11,6 +10,10 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
+    // ✅ Clear previous session and local storage data
+    sessionStorage.clear();
+    localStorage.clear();
+
     const data = {
       email: loginData.email,
       password: loginData.password,
@@ -21,33 +24,30 @@ export default function Login() {
     axios
       .post("http://localhost:8080/api/auth/login", data)
       .then((response) => {
-        console.log("Login successful:", response.data.data.access_token);
+        const token = response.data.data.access_token;
+        console.log("Login successful:", token);
 
-        //decode the token to get user role
-        const decodedToken = JSON.parse(
-          atob(response.data.data.access_token.split(".")[1])
-        );
+        // ✅ Decode JWT token to extract user role
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        const userRole = decodedToken.role[0].authority;
         console.log("Decoded Token:", decodedToken);
-        // Store the token and decodedToken in local storage or state management
-        localStorage.setItem("access_token", response.data.data.access_token);
-        sessionStorage.setItem("access_token", response.data.data.access_token);
-        sessionStorage.setItem("user_role", decodedToken.role[0].authority);
-        localStorage.setItem("user_role", decodedToken.role[0].authority);
 
-        // Redirect based on role
-        if (decodedToken.role[0].authority === "ROLE_HR") {
+        // ✅ Store token and role
+        sessionStorage.setItem("access_token", token);
+        sessionStorage.setItem("user_role", userRole);
+        localStorage.setItem("access_token", token);
+        localStorage.setItem("user_role", userRole);
+
+        // ✅ Redirect user based on role
+        if (userRole === "ROLE_HR") {
           navigate("/hr-dashboard");
-        } else if (decodedToken.role[0].authority === "ROLE_USER") {
+        } else if (userRole === "ROLE_USER") {
           navigate("/user-dashboard");
         } else {
-          // You can use a custom notification component here
-          // For now, fallback to alert for invalid role
           alert("Invalid role");
         }
-        // Example: Replace alert with a styled notification
-        // You can use a library like react-toastify for better notifications
-        // toast.success("Login successful!");
-        // For now, use a simple custom notification
+
+        // ✅ Notification (simple custom toast)
         const notification = document.createElement("div");
         notification.innerText = "Login successful!";
         notification.style.position = "fixed";
@@ -65,45 +65,18 @@ export default function Login() {
         }, 2000);
       })
       .catch((error) => {
-        console.log("Login error:", error);
+        console.error("Login error:", error);
         alert("Login failed. Please check your credentials.");
       });
   };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="card w-full max-w-sm shadow-2xl shadow-orange-100 border-2 border-amber-50 bg-base-100">
+      <div className="card w-full max-w-sm shadow-2xl border-2 border-amber-50 bg-base-100">
         <div className="card-body">
           <h2 className="text-center text-2xl font-bold">Login</h2>
 
-          {/* Role selection */}
-          {/* <div className="form-control mb-4 border-1 rounded-2xl border-amber-100 shadow-2xl shadow-amber-50">
-            <label className="label-text font-medium p-2 pt-2">Login as:</label>
-            <label className="label cursor-pointer">
-              <input
-                type="radio"
-                name="role"
-                value="hr"
-                checked={role === "hr"}
-                onChange={(e) => setRole(e.target.value)}
-                className="radio radio-sm "
-              />
-              <span className="label-text p-3 ">HR</span>
-            </label>
-            <label className="label cursor-pointer">
-              <input
-                type="radio"
-                name="role"
-                value="user"
-                checked={role === "user"}
-                onChange={(e) => setRole(e.target.value)}
-                className="radio radio-sm mr-2"
-              />
-              <span className="label-text">User</span>
-            </label>
-          </div> */}
-
-          <div className="form-control ">
+          <div className="form-control">
             <label className="label">
               <span className="label-text pb-2 text-white">Email</span>
             </label>
@@ -124,18 +97,15 @@ export default function Login() {
             </label>
             <input
               type="password"
-              placeholder="••••••••"
               value={loginData.password}
               onChange={(e) =>
                 setLoginData({ ...loginData, password: e.target.value })
               }
+              placeholder="••••••••"
               className="input input-bordered"
             />
             <label className="label">
-              <a
-                href="#"
-                className="label-text-alt link link-hover pt-2 text-warning"
-              >
+              <a href="#" className="label-text-alt link link-hover pt-2 text-warning">
                 Forgot password?
               </a>
             </label>
